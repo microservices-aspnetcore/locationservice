@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StatlerWaldorfCorp.LocationService.Models;
+using StatlerWaldorfCorp.LocationService.Persistence;
 
 namespace StatlerWaldorfCorp.LocationService {
     public class Startup
@@ -22,6 +22,7 @@ namespace StatlerWaldorfCorp.LocationService {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSingleton<ILocationRecordRepository, InMemoryLocationRecordRepository>();
         }
 
         public void Configure(IApplicationBuilder app)
