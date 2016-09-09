@@ -10,8 +10,7 @@ namespace StatlerWaldorfCorp.LocationService {
     {
         public Startup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
+            var builder = new ConfigurationBuilder()                
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
