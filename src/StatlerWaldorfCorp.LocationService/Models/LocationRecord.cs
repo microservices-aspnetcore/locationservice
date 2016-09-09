@@ -1,6 +1,6 @@
 using System;
 
-namespace StatlerWaldorfCorp.LocationService {
+namespace StatlerWaldorfCorp.LocationService.Models {
 
     public class LocationRecord {
 
