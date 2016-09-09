@@ -54,6 +54,13 @@ namespace StatlerWaldorfCorp.LocationService.Persistence {
             return Delete(locationRecord.MemberID, locationRecord.ID);
         }
 
+        public LocationRecord GetLatestForMember(Guid memberId) {
+            var memberRecords = getMemberRecords(memberId);
+
+            LocationRecord lr = memberRecords.Values.LastOrDefault();
+            return lr;
+        }
+
         private SortedList<long, LocationRecord> getMemberRecords(Guid memberId) {
             if (!locationRecords.ContainsKey(memberId)) {
                 locationRecords.Add(memberId, new SortedList<long, LocationRecord>());

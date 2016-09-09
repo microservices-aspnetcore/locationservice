@@ -9,6 +9,8 @@ namespace StatlerWaldorfCorp.LocationService.Models {
         LocationRecord Get(Guid memberId, Guid recordId);
         LocationRecord Delete(Guid memberId, Guid recordId);
        
+        LocationRecord GetLatestForMember(Guid memberId);
+        
         ICollection<LocationRecord> AllForMember(Guid memberId);
     }
 }

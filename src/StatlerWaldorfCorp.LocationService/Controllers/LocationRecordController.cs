@@ -1,6 +1,5 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using StatlerWaldorfCorp.LocationService.Models;
 
 namespace StatlerWaldorfCorp.LocationService.Controllers {
@@ -21,8 +20,14 @@ namespace StatlerWaldorfCorp.LocationService.Controllers {
         }
 
         [HttpGet]
-        public IActionResult GetLocationsForMember(Guid memberId) {
+        public IActionResult GetLocationsForMember(Guid memberId) {            
             return this.Ok(locationRepository.AllForMember(memberId));
+        }
+
+        [HttpGet("latest")]
+        public IActionResult GetLatestForMember(Guid memberId) {
+            System.Console.WriteLine("Retrieving current location for " + memberId);
+            return this.Ok(locationRepository.GetLatestForMember(memberId));
         }
     }
 }
