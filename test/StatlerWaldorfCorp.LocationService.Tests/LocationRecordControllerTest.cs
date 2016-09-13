@@ -25,6 +25,19 @@ namespace StatlerWaldorfCorp.LocationService
         }
 
         [Fact]
+        public void ShouldReturnEmtpyListForNewMember()
+        {
+            ILocationRecordRepository repository = new InMemoryLocationRecordRepository();
+            LocationRecordController controller = new LocationRecordController(repository);
+            Guid memberGuid = Guid.NewGuid();
+
+            ICollection<LocationRecord> locationRecords = 
+                ((controller.GetLocationsForMember(memberGuid) as ObjectResult).Value as ICollection<LocationRecord>);
+
+            Assert.Equal(0, locationRecords.Count());
+        }
+
+        [Fact]
         public void ShouldTrackAllLocationsForMember()
         {
             ILocationRecordRepository repository = new InMemoryLocationRecordRepository();
@@ -64,6 +77,6 @@ namespace StatlerWaldorfCorp.LocationService
             LocationRecord latest = ((controller.GetLatestForMember(memberGuid) as ObjectResult).Value as LocationRecord);
 
             Assert.Equal(latestId, latest.ID);
-        }        
+        } 
     }
 }
