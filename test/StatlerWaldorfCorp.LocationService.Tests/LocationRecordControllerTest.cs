@@ -19,9 +19,12 @@ namespace StatlerWaldorfCorp.LocationService
             LocationRecordController controller = new LocationRecordController(repository);
             Guid memberGuid = Guid.NewGuid();
 
-            controller.AddLocation(memberGuid, new LocationRecord(){ MemberID = memberGuid });
+            controller.AddLocation(memberGuid, new LocationRecord(){ ID = Guid.NewGuid(), 
+                MemberID = memberGuid, Timestamp = 1 });
+            controller.AddLocation(memberGuid, new LocationRecord(){ ID = Guid.NewGuid(), 
+                MemberID = memberGuid, Timestamp = 2 });
 
-            Assert.Equal(1, repository.AllForMember(memberGuid).Count());
+            Assert.Equal(2, repository.AllForMember(memberGuid).Count());
         }
 
         [Fact]
@@ -88,6 +91,7 @@ namespace StatlerWaldorfCorp.LocationService
 
             LocationRecord latest = ((controller.GetLatestForMember(memberGuid) as ObjectResult).Value as LocationRecord);
 
+            Assert.NotNull(latest);
             Assert.Equal(latestId, latest.ID);
         } 
     }
