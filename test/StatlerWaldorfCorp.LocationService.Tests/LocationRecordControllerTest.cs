@@ -58,6 +58,18 @@ namespace StatlerWaldorfCorp.LocationService
         }
 
         [Fact]
+        public void ShouldTrackNullLatestForNewMember()
+        {
+            ILocationRecordRepository repository = new InMemoryLocationRecordRepository();
+            LocationRecordController controller = new LocationRecordController(repository);
+            Guid memberGuid = Guid.NewGuid();                
+
+            LocationRecord latest = ((controller.GetLatestForMember(memberGuid) as ObjectResult).Value as LocationRecord);
+
+            Assert.Null(latest);
+        }
+
+        [Fact]
         public void ShouldTrackLatestLocationsForMember()
         {
             ILocationRecordRepository repository = new InMemoryLocationRecordRepository();
