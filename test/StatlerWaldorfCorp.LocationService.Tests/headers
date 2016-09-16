@@ -1,0 +1,7 @@
+HTTP/1.1 201 Created
+Date: Tue, 13 Sep 2016 11:56:27 GMT
+Transfer-Encoding: chunked
+Content-Type: application/json; charset=utf-8
+Location: /locations/f0d5bc74-7c1c-431f-b8a4-44af0a403baf/00000000-0000-0000-0000-000000000000
+Server: Kestrel
+

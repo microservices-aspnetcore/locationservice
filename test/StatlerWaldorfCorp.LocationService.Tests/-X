@@ -1,0 +1,5 @@
+HTTP/1.1 415 Unsupported Media Type
+Date: Tue, 13 Sep 2016 11:54:54 GMT
+Content-Length: 0
+Server: Kestrel
+

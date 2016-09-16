@@ -26,7 +26,6 @@ namespace StatlerWaldorfCorp.LocationService.Controllers {
 
         [HttpGet("latest")]
         public IActionResult GetLatestForMember(Guid memberId) {
-            System.Console.WriteLine("Retrieving current location for " + memberId);
             return this.Ok(locationRepository.GetLatestForMember(memberId));
         }
     }
