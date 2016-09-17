@@ -4,9 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StatlerWaldorfCorp.LocationService.Models;
 using StatlerWaldorfCorp.LocationService.Persistence;
-
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
+using SteelToe.Extensions.Configuration;
+using SteelToe.CloudFoundry.Connector.PostgreSql.EFCore;
 
 namespace StatlerWaldorfCorp.LocationService {
     public class Startup
@@ -17,7 +18,8 @@ namespace StatlerWaldorfCorp.LocationService {
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
+                .AddEnvironmentVariables()
+                .AddCloudFoundry();
 
             Configuration = builder.Build();
         }
