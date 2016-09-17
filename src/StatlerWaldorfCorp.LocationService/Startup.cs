@@ -27,7 +27,7 @@ namespace StatlerWaldorfCorp.LocationService {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DataAccessPostgreSqlProvider")));
+                options.UseNpgsql(Configuration.GetConnectionString("LocationConnString")));
             services.AddScoped<ILocationRecordRepository, PostgresLocationRecordRepository>();
 
             services.AddMvc();
