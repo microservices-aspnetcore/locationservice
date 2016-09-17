@@ -1,6 +1,7 @@
 // using Microsoft.EntityFrameworkCore;
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using StatlerWaldorfCorp.LocationService.Models;
 
@@ -8,36 +9,54 @@ namespace StatlerWaldorfCorp.LocationService.Persistence
 {
     public class PostgresLocationRecordRepository : ILocationRecordRepository
     {
-        // ApplicationDbContext context;
+        private ApplicationDbContext context;
+
+        public PostgresLocationRecordRepository(ApplicationDbContext context)
+        {
+            this.context = context;
+        }
 
         public LocationRecord Add(LocationRecord locationRecord)
         {
+            this.context.Add(locationRecord);
+            this.context.SaveChanges();
             return locationRecord;
         }   
 
         public LocationRecord Update(LocationRecord locationRecord)
         {
-            return locationRecord;            
+            this.context.SaveChanges();
+            return locationRecord;
         }
 
         public LocationRecord Get(Guid memberId, Guid recordId)
         {
-            return new LocationRecord();
+            return this.context.LocationRecords.Single(lr => lr.MemberID == memberId && lr.ID == recordId);
         }
 
         public LocationRecord Delete(Guid memberId, Guid recordId)
         {            
-            return new LocationRecord();
+            LocationRecord locationRecord = this.Get(memberId, recordId);
+            this.context.Remove(locationRecord);
+            this.context.SaveChanges();
+            return locationRecord;
         }
        
         public LocationRecord GetLatestForMember(Guid memberId)
         {
-            return new LocationRecord();
+            LocationRecord locationRecord = this.context.LocationRecords.
+                Where(lr => lr.MemberID == memberId).
+                OrderBy(lr => lr.Timestamp).
+                Last();
+            return locationRecord;
         }
         
         public ICollection<LocationRecord> AllForMember(Guid memberId)
         {
-            return new List<LocationRecord>();            
+            return this.context.LocationRecords.
+                Where(lr => lr.MemberID == memberId).
+                OrderBy(lr => lr.Timestamp).
+                ToList();            
         }
     }
 }
