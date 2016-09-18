@@ -49,7 +49,7 @@ build:
     - script:
         name: copy tools
         code: |
-          cp  ~/.nuget/packages/.tools/Microsoft.EntityFrameworkCore.Tools $WERCKER_OUTPUT_DIR/app/ef-tools
+          cp -r  ~/.nuget/packages/.tools/Microsoft.EntityFrameworkCore.Tools $WERCKER_OUTPUT_DIR/app/ef-tools
 deploy:
   steps:
     - internal/docker-push:
