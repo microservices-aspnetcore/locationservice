@@ -37,6 +37,10 @@ build:
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
           cp -r . $WERCKER_OUTPUT_DIR/app 
+    - script:
+        name: copy entrypoint
+        code: |
+          cp docker_entrypoint.sh $WERCKER_OUTPUT_DIR/app           
 deploy:
   steps:
     - internal/docker-push:
