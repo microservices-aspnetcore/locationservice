@@ -45,7 +45,7 @@ build:
         name: copy config
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
-          cp appsettings*json $WERCKER_OUTPUT_DIR/app/publish
+          cp appsettings*json project.json $WERCKER_OUTPUT_DIR/app/publish
 deploy:
   steps:
     - internal/docker-push:
