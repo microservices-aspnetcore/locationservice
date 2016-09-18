@@ -8,7 +8,6 @@
 	    "type": "platform",
 	    "version": "1.0.0"
 	},
-    },
     "testRunner": "xunit",
     "frameworks": {
 	"netcoreapp1.0": {
