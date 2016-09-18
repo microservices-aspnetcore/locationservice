@@ -8,11 +8,15 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using SteelToe.Extensions.Configuration;
 using SteelToe.CloudFoundry.Connector.PostgreSql.EFCore;
+using Microsoft.Extensions.Logging;
 
 namespace StatlerWaldorfCorp.LocationService {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        private ILogger logger;
+        private ILoggerFactory loggerFactory;
+
+        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
@@ -22,14 +26,30 @@ namespace StatlerWaldorfCorp.LocationService {
                 .AddCloudFoundry();
 
             Configuration = builder.Build();
+
+            this.loggerFactory = loggerFactory;
+            this.loggerFactory.AddConsole(LogLevel.Information);
+            this.loggerFactory.AddDebug();
+
+            this.logger = this.loggerFactory.CreateLogger("Startup");            
         }
                 
         public IConfigurationRoot Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("LocationConnString")));
+            if(Configuration.GetConnectionString("LocationConnString") != null) {
+                logger.LogInformation("PostgreSql: connecting by environment variable specifieid.");
+
+                services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("LocationConnString")));
+            } else {
+                logger.LogInformation("PostgreSql: connecting to CF via SteelToe.");
+                
+                services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
+                    options.UseNpgsql(Configuration));
+            }
+
             services.AddScoped<ILocationRecordRepository, PostgresLocationRecordRepository>();
 
             services.AddMvc();
@@ -37,7 +57,7 @@ namespace StatlerWaldorfCorp.LocationService {
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMvc();
+            app.UseMvc();            
         }
     }   
 }
