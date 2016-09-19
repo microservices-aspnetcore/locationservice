@@ -46,6 +46,7 @@ build:
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
           cp appsettings*json $WERCKER_OUTPUT_DIR/app/publish
+          mkdir $WERCKER_OUTPUT_DIR/app/publish/app/tmp
 deploy:
   steps:
     - internal/docker-push:
