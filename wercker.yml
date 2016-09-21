@@ -60,17 +60,16 @@ migrate:
   steps:
     - script:
         name: restore
-        cwd: src/StatlerWaldorfCorp.LocationService
         code: |
           echo "stub"
 cloud-deploy:
   steps:
-   - cng/cf-deploy:
-       api: $API
-       user: $USER
-       password: $PASSWORD
-       org: $ORG
-       space: $SPACE
-       appname: locationservice
-       docker_image: dotnetcoreservices/locationservice
+    - cng/cf-deploy:
+        api: $API
+        user: $USER
+        password: $PASSWORD
+        org: $ORG
+        space: $SPACE
+        appname: locationservice
+        docker_image: dotnetcoreservices/locationservice
              
