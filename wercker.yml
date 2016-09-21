@@ -67,6 +67,7 @@ migrate:
         name: restore
         cwd: $WERCKER_OUTPUT_DIR/migration
         code: |
+          ls $WERCKER_SOURCE_DIR
           dotnet restore
     - script:
         name: build
@@ -77,7 +78,7 @@ migrate:
         name: restore
         cwd: $WERCKER_OUTPUT_DIR/migration
         code: |
-          dotnet ef database update
+          ConnectionStrings__LocationConnString=$CONNSTR dotnet ef database update
 cloud-deploy:
   steps:
     - chrisumbel/cf-deploy:
