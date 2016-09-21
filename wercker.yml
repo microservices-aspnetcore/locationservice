@@ -46,7 +46,12 @@ build:
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
           cp appsettings*json $WERCKER_OUTPUT_DIR/app/publish
-          mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp                    
+          mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp   
+    - script:
+        name: copy source_for_migration
+        cwd: src
+        code: |
+          cp -r StatlerWaldorfCorp.LocationService $WERCKER_OUTPUT_DIR/migration                  
 deploy:
   steps:
     - internal/docker-push:
@@ -60,17 +65,17 @@ migrate:
   steps:
     - script:
         name: restore
-        cwd: $WERCKER_SOURCE_DIR/src/StatlerWaldorfCorp.LocationService
+        cwd: $WERCKER_OUTPUT_DIR/migration
         code: |
           dotnet restore
     - script:
         name: build
-        cwd: $WERCKER_SOURCE_DIR/src/StatlerWaldorfCorp.LocationService        
+        cwd: $WERCKER_OUTPUT_DIR/migration
         code: |
           dotnet build
     - script:
         name: restore
-        cwd: $WERCKER_SOURCE_DIR/src/StatlerWaldorfCorp.LocationService
+        cwd: $WERCKER_OUTPUT_DIR/migration
         code: |
           dotnet ef database update
 cloud-deploy:
