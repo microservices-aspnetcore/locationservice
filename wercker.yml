@@ -60,14 +60,17 @@ migrate:
   steps:
     - script:
         name: restore
+        cwd: $WERCKER_SOURCE_DIR/src/StatlerWaldorfCorp.LocationService
         code: |
           dotnet restore
     - script:
         name: build
+        cwd: $WERCKER_SOURCE_DIR/src/StatlerWaldorfCorp.LocationService        
         code: |
           dotnet build
     - script:
         name: restore
+        cwd: $WERCKER_SOURCE_DIR/src/StatlerWaldorfCorp.LocationService
         code: |
           dotnet ef database update
 cloud-deploy:
