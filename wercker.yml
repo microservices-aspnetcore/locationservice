@@ -62,6 +62,14 @@ migrate:
         name: restore
         code: |
           dotnet restore
+    - script:
+        name: build
+        code: |
+          dotnet build
+    - script:
+        name: restore
+        code: |
+          dotnet ef database update
 cloud-deploy:
   steps:
     - chrisumbel/cf-deploy:
