@@ -64,7 +64,7 @@ migrate:
           echo "stub"
 cloud-deploy:
   steps:
-    - chrisumbel/cf-pusherate:
+    - chrisumbel/cf-deploy:
         api: $API
         user: $USER
         password: $PASSWORD
@@ -72,3 +72,4 @@ cloud-deploy:
         space: $SPACE
         appname: locationservice
         docker_image: dotnetcoreservices/locationservice
+        skip-ssl-validation: true
