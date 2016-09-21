@@ -6,8 +6,8 @@ using StatlerWaldorfCorp.LocationService.Models;
 using StatlerWaldorfCorp.LocationService.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
-using SteelToe.Extensions.Configuration;
-using SteelToe.CloudFoundry.Connector.PostgreSql.EFCore;
+using Steeltoe.Extensions.Configuration;
+using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 using Microsoft.Extensions.Logging;
 
 namespace StatlerWaldorfCorp.LocationService {
