@@ -72,5 +72,3 @@ cloud-deploy:
         space: $SPACE
         appname: locationservice
         docker_image: dotnetcoreservices/locationservice
-        skip-ssl-validation: true
-             
