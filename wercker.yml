@@ -46,7 +46,7 @@ build:
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
           cp appsettings*json $WERCKER_OUTPUT_DIR/app/publish
-          mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp
+          mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp                    
 deploy:
   steps:
     - internal/docker-push:
@@ -56,3 +56,26 @@ deploy:
         repository: dotnetcoreservices/locationservice
         registry: https://registry.hub.docker.com
         entrypoint: "/pipeline/source/app/docker_entrypoint.sh"
+migrate:
+  steps:
+    - script:
+        name: restore
+        cwd: src/StatlerWaldorfCorp.LocationService
+        code: |
+          dotnet restore
+    - script:
+        name: build
+        cwd: src/StatlerWaldorfCorp.LocationService
+        code: |
+          dotnet build
+cloud-deploy:
+  steps:
+   - cng/cf-deploy:
+       api: $API
+       user: $USER
+       password: $PASSWORD
+       org: $ORG
+       space: $SPACE
+       appname: locationservice
+       docker_image: dotnetcoreservices/locationservice
+             
