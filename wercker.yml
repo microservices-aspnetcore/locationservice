@@ -60,17 +60,17 @@ migrate:
   steps:
     - script:
         name: restore
-        cwd: $WERCKER_SOURCE_DIR/app
+        cwd: app
         code: |
           dotnet restore
     - script:
         name: build
-        cwd: $WERCKER_SOURCE_DIR/app
+        cwd: app
         code: |
           dotnet build
     - script:
         name: migrate
-        cwd: $WERCKER_SOURCE_DIR/app
+        cwd: app
         code: |
           ConnectionStrings__LocationConnString=$CONNSTR dotnet ef database update
 cloud-deploy:
