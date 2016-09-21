@@ -64,7 +64,7 @@ migrate:
           echo "stub"
 cloud-deploy:
   steps:
-    - chrisumbel/cf-deploy:
+    - chrisumbel/cf-pusherate:
         api: $API
         user: $USER
         password: $PASSWORD
