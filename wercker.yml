@@ -65,10 +65,12 @@ migrate:
   steps:
     - script:
         name: restore
-        cwd: $WERCKER_OUTPUT_DIR/migration
         code: |
           ls $WERCKER_SOURCE_DIR
-          dotnet restore
+          echo "-------------------"
+          ls $WERCKER_OUTPUT_DIR
+          echo "-------------------"          
+          pwd
     - script:
         name: build
         cwd: $WERCKER_OUTPUT_DIR/migration
