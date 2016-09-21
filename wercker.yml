@@ -60,14 +60,8 @@ migrate:
   steps:
     - script:
         name: restore
-        cwd: src/StatlerWaldorfCorp.LocationService
         code: |
           dotnet restore
-    - script:
-        name: build
-        cwd: src/StatlerWaldorfCorp.LocationService
-        code: |
-          dotnet build
 cloud-deploy:
   steps:
     - chrisumbel/cf-deploy:
