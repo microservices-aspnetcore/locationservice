@@ -8,9 +8,6 @@ namespace StatlerWaldorfCorp.LocationService
     {
         public static void Main(string[] args)
         {
-			System.Console.WriteLine("--------------");
-			System.Console.WriteLine(System.IO.Path.GetTempPath());
-			System.Console.WriteLine("--------------");			
             var config = new ConfigurationBuilder()
 								.AddCommandLine(args)
 								.Build();

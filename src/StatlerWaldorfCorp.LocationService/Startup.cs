@@ -38,20 +38,9 @@ namespace StatlerWaldorfCorp.LocationService {
 
         public void ConfigureServices(IServiceCollection services)
         {
-            if(Configuration.GetConnectionString("LocationConnString") != null) {
-                logger.LogInformation("PostgreSql: connecting by environment variable specifieid.");
-
-                services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("LocationConnString")));
-            } else {
-                logger.LogInformation("PostgreSql: connecting to CF via SteelToe.");
-                
-                services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
-                    options.UseNpgsql(Configuration));
-            }
-
+            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql(Configuration));
             services.AddScoped<ILocationRecordRepository, PostgresLocationRecordRepository>();
-
             services.AddMvc();
         }
 
