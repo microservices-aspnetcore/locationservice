@@ -72,7 +72,7 @@ migrate:
         name: migrate
         cwd: app
         code: |
-	  vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri="${POSTGRES_URL}" dotnet ef database update
+	  vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$POSTGRES_URL dotnet ef database update
 cloud-deploy:
   steps:
     - chrisumbel/cf-deploy:
