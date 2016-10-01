@@ -8,7 +8,7 @@ namespace StatlerWaldorfCorp.LocationService
     {
         public static void Main(string[] args)
         {
-            var config = new ConfigurationBuilder()
+             IConfiguration config = new ConfigurationBuilder()
 								.AddCommandLine(args)
 								.Build();
 

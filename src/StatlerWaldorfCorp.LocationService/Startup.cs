@@ -9,6 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace StatlerWaldorfCorp.LocationService {
     public class Startup
@@ -22,7 +23,9 @@ namespace StatlerWaldorfCorp.LocationService {
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
-                .AddCloudFoundry();
+                .AddCommandLine(System.Environment.GetCommandLineArgs().Skip(1).ToArray())
+                .AddCloudFoundry()
+                ;
 
             Configuration = builder.Build();
 
