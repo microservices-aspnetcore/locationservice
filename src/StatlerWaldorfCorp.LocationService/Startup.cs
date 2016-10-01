@@ -23,10 +23,9 @@ namespace StatlerWaldorfCorp.LocationService {
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
-                .AddCommandLine(System.Environment.GetCommandLineArgs().Skip(1).ToArray())
-                .AddCloudFoundry()
-                ;
-
+                .AddCloudFoundry();
+            
+//            builder.AddCommandLine(System.Environment.GetCommandLineArgs().Skip(1).ToArray());
             Configuration = builder.Build();
 
             this.loggerFactory = loggerFactory;

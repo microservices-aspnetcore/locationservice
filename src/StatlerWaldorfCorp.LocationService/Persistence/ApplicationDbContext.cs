@@ -24,19 +24,5 @@ namespace StatlerWaldorfCorp.LocationService.Persistence
         }
 
         public DbSet<LocationRecord> LocationRecords {get; set;}        
-    }
-    
-    public class ApplicationDbContextFactory : IDbContextFactory<ApplicationDbContext>
-    {
-        public ApplicationDbContext Create(DbContextFactoryOptions options)
-        {
-            var configBuilder = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
-                .AddCloudFoundry();
-
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseNpgsql(configBuilder.Build());
-            return new ApplicationDbContext(builder.Options);
-        }
-    }    
+    }      
 }

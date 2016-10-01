@@ -8,17 +8,17 @@ namespace StatlerWaldorfCorp.LocationService
     {
         public static void Main(string[] args)
         {
-             IConfiguration config = new ConfigurationBuilder()
-								.AddCommandLine(args)
-								.Build();
-
-	    	var host = new WebHostBuilder()
-							.UseKestrel()
-							.UseStartup<Startup>()
-							.UseConfiguration(config)
+			IConfiguration config = new ConfigurationBuilder()
+							.AddCommandLine(args)
 							.Build();
 
-	    	host.Run();
+			var host = new WebHostBuilder()
+						.UseKestrel()
+						.UseStartup<Startup>()
+						.UseConfiguration(config)
+						.Build();
+
+			host.Run();
         }
     }
 }
