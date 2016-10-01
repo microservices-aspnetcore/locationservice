@@ -48,7 +48,7 @@ namespace StatlerWaldorfCorp.LocationService {
 
         public void Configure(IApplicationBuilder app)
         {
-            app.UseMvc();            
+            app.UseMvc();
         }
     }   
 }
