@@ -78,7 +78,7 @@ integration-test:
         name: migrate
         cwd: app
         code: |
-           export INTEGRATION_POSTGRES_URL=postgres://integrator:$POSTGRES_PASSWORD@:$POSTGRES_PORT_5432_TCP_ADDR$POSTGRES_PORT_5432_TCP_PORT
+           export INTEGRATION_POSTGRES_URL=postgres://integrator:$POSTGRES_PASSWORD@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT
            vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                    
 migrate:
   steps:
