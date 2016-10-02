@@ -12,6 +12,8 @@ namespace StatlerWaldorfCorp.LocationService
 							.AddCommandLine(args)
 							.Build();
 
+			Startup.Args = args;
+
 			var host = new WebHostBuilder()
 						.UseKestrel()
 						.UseStartup<Startup>()

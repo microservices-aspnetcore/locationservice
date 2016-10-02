@@ -14,6 +14,7 @@ using System.Linq;
 namespace StatlerWaldorfCorp.LocationService {
     public class Startup
     {
+        public static string[] Args {get; set;} = new string[] {};
         private ILogger logger;
         private ILoggerFactory loggerFactory;
 
@@ -23,9 +24,9 @@ namespace StatlerWaldorfCorp.LocationService {
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
+                .AddCommandLine(Startup.Args)
                 .AddCloudFoundry();
-            
-//            builder.AddCommandLine(System.Environment.GetCommandLineArgs().Skip(1).ToArray());
+
             Configuration = builder.Build();
 
             this.loggerFactory = loggerFactory;
