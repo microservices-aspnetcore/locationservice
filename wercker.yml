@@ -25,6 +25,13 @@ build:
         code: |
           dotnet publish -o publish
     - script:
+        name: migrate
+        cwd: src/StatlerWaldorfCorp.LocationService
+        code: |
+           export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
+           echo $INTEGRATION_POSTGRES_URL
+           vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                              
+    - script:
         name: test-restore
         cwd: test/StatlerWaldorfCorp.LocationService.Tests
         code: |
@@ -44,8 +51,6 @@ build:
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
           cp -r . $WERCKER_OUTPUT_DIR/app 
-deploy:
-  steps:
     - script:
         name: copy entrypoint
         code: |
@@ -56,6 +61,8 @@ deploy:
         code: |
           cp appsettings*json $WERCKER_OUTPUT_DIR/app/publish
           mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp   
+deploy:
+  steps:
     - internal/docker-push:
         cwd: $WERCKER_OUTPUT_DIR/app
         username: $USERNAME
@@ -63,25 +70,6 @@ deploy:
         repository: dotnetcoreservices/locationservice
         registry: https://registry.hub.docker.com
         entrypoint: "/pipeline/source/app/docker_entrypoint.sh"
-integration-test:
-  steps:
-    - script:
-        name: restore
-        cwd: app
-        code: |
-          dotnet restore
-    - script:
-        name: build
-        cwd: app
-        code: |
-          dotnet build
-    - script:
-        name: migrate
-        cwd: app
-        code: |
-           export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
-           echo $INTEGRATION_POSTGRES_URL
-           vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                    
 migrate:
   steps:
     - script:
