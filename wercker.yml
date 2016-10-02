@@ -59,7 +59,7 @@ deploy:
         repository: dotnetcoreservices/locationservice
         registry: https://registry.hub.docker.com
         entrypoint: "/pipeline/source/app/docker_entrypoint.sh"
-integration_test:
+integration-test:
   steps:
     - script:
         name: restore
