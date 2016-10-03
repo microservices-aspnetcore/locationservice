@@ -43,7 +43,6 @@ build:
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
            export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
-           echo $INTEGRATION_POSTGRES_URL
            vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                              
     - script:
         name: integration-restore
@@ -60,6 +59,12 @@ build:
         cwd: test/StatlerWaldorfCorp.LocationService.Integration
         code: |
           dotnet test
+    - script:
+        name: integration-test
+        cwd: src/StatlerWaldorfCorp.LocationService
+        code: |
+          export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice        
+          vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet test
 
 # packaging
     - script:
