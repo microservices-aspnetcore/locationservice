@@ -19,11 +19,6 @@ build:
         code: |
           dotnet build  
     - script:
-        name: publish
-        cwd: src/StatlerWaldorfCorp.LocationService
-        code: |
-          dotnet publish -o publish
-    - script:
         name: test-restore
         cwd: test/StatlerWaldorfCorp.LocationService.Tests
         code: |
@@ -59,6 +54,21 @@ integration-test:
            vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                              
 deploy:
   steps:
+    - script:
+        name: restore
+        cwd: src/StatlerWaldorfCorp.LocationService
+        code: |
+          dotnet restore
+    - script:
+        name: build
+        cwd: src/StatlerWaldorfCorp.LocationService
+        code: |
+          dotnet build  
+    - script:
+        name: publish
+        cwd: src/StatlerWaldorfCorp.LocationService
+        code: |
+          dotnet publish -o publish  
     - script:
         name: copy binary
         cwd: src/StatlerWaldorfCorp.LocationService
