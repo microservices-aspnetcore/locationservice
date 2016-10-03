@@ -39,7 +39,8 @@ build:
         cwd: test/StatlerWaldorfCorp.LocationService.Tests
         code: |
           dotnet test
-
+integration-test:
+  steps:
     - script:
         name: integration-migrate
         cwd: src/StatlerWaldorfCorp.LocationService
