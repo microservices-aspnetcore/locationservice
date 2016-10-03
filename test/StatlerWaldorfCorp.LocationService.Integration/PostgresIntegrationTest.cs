@@ -23,15 +23,17 @@ namespace StatlerWaldorfCorp.LocationService.Integration
         {
 			config = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
+                .AddCloudFoundry()
                 .Build();
         }
 
         [Fact]
         public void Postgres() 
         {
-            string connStr = config.GetValue<string>("ConnectionStrings:LocationDB");
+            string connStr = config.GetValue<string>("vcap:services:postgres:0:credentials:uri");
+
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            optionsBuilder.UseNpgsql(connStr);
+            optionsBuilder.UseNpgsql(config);
             ApplicationDbContext context = new ApplicationDbContext(optionsBuilder.Options);            
             
             PostgresLocationRecordRepository repository = new PostgresLocationRecordRepository(context);
