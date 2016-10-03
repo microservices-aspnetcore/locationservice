@@ -43,6 +43,14 @@ build:
            vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                              
 
     - script:
+        name: copy config
+        code: |
+          cp -r * $WERCKER_OUTPUT_DIR
+
+
+deploy:
+  steps:
+    - script:
         name: publish
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
@@ -63,8 +71,6 @@ build:
         code: |
           cp appsettings*json $WERCKER_OUTPUT_DIR/app/publish
           mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp
-deploy:
-  steps:
     - internal/docker-push:
         cwd: $WERCKER_OUTPUT_DIR/app
         username: $USERNAME
