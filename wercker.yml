@@ -58,7 +58,7 @@ build:
         name: integration-test
         cwd: test/StatlerWaldorfCorp.LocationService.Integration
         code: |
-          vcap__services__postgres__0__credentials__uri="User ID=integrator;Password=inteword;Host=$POSTGRES_PORT_5432_TCP_ADDR;Port=$POSTGRES_PORT_5432_TCP_PORT;Database=locationservice;" dotnet test
+          ConnectionStrings__LocationDB="User ID=integrator;Password=inteword;Host=$POSTGRES_PORT_5432_TCP_ADDR;Port=$POSTGRES_PORT_5432_TCP_PORT;Database=locationservice;" dotnet test
 
 # packaging
     - script:

@@ -29,7 +29,7 @@ namespace StatlerWaldorfCorp.LocationService.Integration
         [Fact]
         public void Postgres() 
         {
-            string connStr = config.GetValue<string>("vcap:services:postgres:0:credentials:uri");
+            string connStr = config.GetValue<string>("ConnectionStrings:LocationDB");
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseNpgsql(connStr);
             ApplicationDbContext context = new ApplicationDbContext(optionsBuilder.Options);            
