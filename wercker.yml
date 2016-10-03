@@ -33,18 +33,6 @@ build:
         cwd: test/StatlerWaldorfCorp.LocationService.Tests
         code: |
           dotnet test
-integration-test:
-  steps:
-    - script:
-        name: restore
-        cwd: src/StatlerWaldorfCorp.LocationService
-        code: |
-          dotnet restore
-    - script:
-        name: build
-        cwd: src/StatlerWaldorfCorp.LocationService
-        code: |
-          dotnet build    
     - script:
         name: integration-migrate
         cwd: src/StatlerWaldorfCorp.LocationService
@@ -52,18 +40,6 @@ integration-test:
            export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
            echo $INTEGRATION_POSTGRES_URL
            vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                              
-deploy:
-  steps:
-    - script:
-        name: restore
-        cwd: src/StatlerWaldorfCorp.LocationService
-        code: |
-          dotnet restore
-    - script:
-        name: build
-        cwd: src/StatlerWaldorfCorp.LocationService
-        code: |
-          dotnet build  
     - script:
         name: publish
         cwd: src/StatlerWaldorfCorp.LocationService
@@ -77,13 +53,16 @@ deploy:
     - script:
         name: copy entrypoint
         code: |
-          cp docker_entrypoint.sh $WERCKER_OUTPUT_DIR/app           
+          cp docker_entrypoint.sh $WERCKER_OUTPUT_DIR/app
+          ls $WERCKER_OUTPUT_DIR/app
     - script:
         name: copy config
         cwd: src/StatlerWaldorfCorp.LocationService
         code: |
           cp appsettings*json $WERCKER_OUTPUT_DIR/app/publish
-          mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp   
+          mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp
+deploy:
+  steps:
     - internal/docker-push:
         cwd: $WERCKER_OUTPUT_DIR/app
         username: $USERNAME
