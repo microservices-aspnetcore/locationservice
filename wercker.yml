@@ -33,6 +33,7 @@ build:
         cwd: test/StatlerWaldorfCorp.LocationService.Tests
         code: |
           dotnet test
+
     - script:
         name: integration-migrate
         cwd: src/StatlerWaldorfCorp.LocationService
@@ -40,6 +41,8 @@ build:
            export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
            echo $INTEGRATION_POSTGRES_URL
            vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                              
+deploy:
+  steps:
     - script:
         name: publish
         cwd: src/StatlerWaldorfCorp.LocationService
@@ -61,8 +64,6 @@ build:
         code: |
           cp appsettings*json $WERCKER_OUTPUT_DIR/app/publish
           mkdir -p $WERCKER_OUTPUT_DIR/app/publish/app/tmp
-deploy:
-  steps:
     - internal/docker-push:
         cwd: $WERCKER_OUTPUT_DIR/app
         username: $USERNAME
