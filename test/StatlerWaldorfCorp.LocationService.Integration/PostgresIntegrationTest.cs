@@ -23,7 +23,6 @@ namespace StatlerWaldorfCorp.LocationService.Integration
         {
 			config = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
-                .AddCloudFoundry()
                 .Build();
         }
 
@@ -34,6 +33,10 @@ namespace StatlerWaldorfCorp.LocationService.Integration
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseNpgsql(connStr);
             ApplicationDbContext context = new ApplicationDbContext(optionsBuilder.Options);            
+            
+            PostgresLocationRecordRepository repository = new PostgresLocationRecordRepository(context);
+            repository.Add(new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
+                MemberID = Guid.NewGuid(), Latitude = 12.3f });
         }
     }
 }
