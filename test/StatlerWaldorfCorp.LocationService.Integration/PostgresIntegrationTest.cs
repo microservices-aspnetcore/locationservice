@@ -12,14 +12,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace StatlerWaldorfCorp.LocationService.Integration 
+namespace StatlerWaldorfCorp.LocationService.Integration
 {
 
     public class PostgresIntegrationTest
     {
         private IConfigurationRoot config;
 
-        public PostgresIntegrationTest() 
+        public PostgresIntegrationTest()
         {
 			config = new ConfigurationBuilder()
                 .AddEnvironmentVariables()
@@ -28,13 +28,13 @@ namespace StatlerWaldorfCorp.LocationService.Integration
         }
 
         [Fact]
-        public void Postgres() 
+        public void Postgres()
         {
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
             optionsBuilder.UseNpgsql(config);
-            ApplicationDbContext context = new ApplicationDbContext(optionsBuilder.Options);            
-            
-            PostgresLocationRecordRepository repository = new PostgresLocationRecordRepository(context);
+            ApplicationDbContext context = new ApplicationDbContext(optionsBuilder.Options);
+
+            LocationRecordRepository repository = new LocationRecordRepository(context);
             repository.Add(new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
                 MemberID = Guid.NewGuid(), Latitude = 12.3f });
         }
