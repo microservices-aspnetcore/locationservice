@@ -33,16 +33,16 @@ namespace StatlerWaldorfCorp.LocationService {
             this.loggerFactory.AddConsole(LogLevel.Information);
             this.loggerFactory.AddDebug();
 
-            this.logger = this.loggerFactory.CreateLogger("Startup");            
+            this.logger = this.loggerFactory.CreateLogger("Startup");
         }
-                
+
         public IConfigurationRoot Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(Configuration));
-            services.AddScoped<ILocationRecordRepository, PostgresLocationRecordRepository>();
+            services.AddScoped<ILocationRecordRepository, LocationRecordRepository>();
             services.AddMvc();
         }
 
@@ -50,5 +50,5 @@ namespace StatlerWaldorfCorp.LocationService {
         {
             app.UseMvc();
         }
-    }   
+    }
 }

@@ -7,11 +7,11 @@ using StatlerWaldorfCorp.LocationService.Models;
 
 namespace StatlerWaldorfCorp.LocationService.Persistence
 {
-    public class PostgresLocationRecordRepository : ILocationRecordRepository
+    public class LocationRecordRepository : ILocationRecordRepository
     {
         private ApplicationDbContext context;
 
-        public PostgresLocationRecordRepository(ApplicationDbContext context)
+        public LocationRecordRepository(ApplicationDbContext context)
         {
             this.context = context;
         }
@@ -21,7 +21,7 @@ namespace StatlerWaldorfCorp.LocationService.Persistence
             this.context.Add(locationRecord);
             this.context.SaveChanges();
             return locationRecord;
-        }   
+        }
 
         public LocationRecord Update(LocationRecord locationRecord)
         {
@@ -35,13 +35,13 @@ namespace StatlerWaldorfCorp.LocationService.Persistence
         }
 
         public LocationRecord Delete(Guid memberId, Guid recordId)
-        {            
+        {
             LocationRecord locationRecord = this.Get(memberId, recordId);
             this.context.Remove(locationRecord);
             this.context.SaveChanges();
             return locationRecord;
         }
-       
+
         public LocationRecord GetLatestForMember(Guid memberId)
         {
             LocationRecord locationRecord = this.context.LocationRecords.
@@ -50,13 +50,13 @@ namespace StatlerWaldorfCorp.LocationService.Persistence
                 Last();
             return locationRecord;
         }
-        
+
         public ICollection<LocationRecord> AllForMember(Guid memberId)
         {
             return this.context.LocationRecords.
                 Where(lr => lr.MemberID == memberId).
                 OrderBy(lr => lr.Timestamp).
-                ToList();            
+                ToList();
         }
     }
 }
