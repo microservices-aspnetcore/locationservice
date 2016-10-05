@@ -7,7 +7,7 @@ using StatlerWaldorfCorp.LocationService.Persistence;
 
 namespace StatlerWaldorfCorp.LocationService.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(LocationDbContext))]
     [Migration("20160917140258_Initial")]
     partial class Initial
     {

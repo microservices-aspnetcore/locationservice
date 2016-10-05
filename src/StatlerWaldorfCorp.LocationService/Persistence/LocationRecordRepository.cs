@@ -9,9 +9,9 @@ namespace StatlerWaldorfCorp.LocationService.Persistence
 {
     public class LocationRecordRepository : ILocationRecordRepository
     {
-        private ApplicationDbContext context;
+        private LocationDbContext context;
 
-        public LocationRecordRepository(ApplicationDbContext context)
+        public LocationRecordRepository(LocationDbContext context)
         {
             this.context = context;
         }

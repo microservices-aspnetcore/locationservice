@@ -7,8 +7,8 @@ using StatlerWaldorfCorp.LocationService.Persistence;
 
 namespace StatlerWaldorfCorp.LocationService.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(LocationDbContext))]
+    partial class LocationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

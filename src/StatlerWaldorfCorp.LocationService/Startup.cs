@@ -40,7 +40,7 @@ namespace StatlerWaldorfCorp.LocationService {
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
+            services.AddEntityFrameworkNpgsql().AddDbContext<LocationDbContext>(options =>
                 options.UseNpgsql(Configuration));
             services.AddScoped<ILocationRecordRepository, LocationRecordRepository>();
             services.AddMvc();

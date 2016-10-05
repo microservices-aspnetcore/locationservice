@@ -30,9 +30,9 @@ namespace StatlerWaldorfCorp.LocationService.Integration
         [Fact]
         public void Postgres()
         {
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<LocationDbContext>();
             optionsBuilder.UseNpgsql(config);
-            ApplicationDbContext context = new ApplicationDbContext(optionsBuilder.Options);
+            LocationDbContext context = new LocationDbContext(optionsBuilder.Options);
 
             LocationRecordRepository repository = new LocationRecordRepository(context);
             repository.Add(new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using StatlerWaldorfCorp.LocationService.Models; 
+using StatlerWaldorfCorp.LocationService.Models;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -9,11 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Steeltoe.Extensions.Configuration;
 
 
-namespace StatlerWaldorfCorp.LocationService.Persistence 
+namespace StatlerWaldorfCorp.LocationService.Persistence
 {
-    public class ApplicationDbContext : DbContext
+    public class LocationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :base(options)
+        public LocationDbContext(DbContextOptions<LocationDbContext> options) :base(options)
         {
         }
 
@@ -23,6 +23,6 @@ namespace StatlerWaldorfCorp.LocationService.Persistence
             modelBuilder.HasPostgresExtension("uuid-ossp");
         }
 
-        public DbSet<LocationRecord> LocationRecords {get; set;}        
-    }      
+        public DbSet<LocationRecord> LocationRecords {get; set;}
+    }
 }
