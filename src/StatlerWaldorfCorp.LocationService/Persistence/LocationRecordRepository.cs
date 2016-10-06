@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StatlerWaldorfCorp.LocationService.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace StatlerWaldorfCorp.LocationService.Persistence
 {
@@ -25,6 +26,7 @@ namespace StatlerWaldorfCorp.LocationService.Persistence
 
         public LocationRecord Update(LocationRecord locationRecord)
         {
+            this.context.Entry(locationRecord).State = EntityState.Modified;
             this.context.SaveChanges();
             return locationRecord;
         }
