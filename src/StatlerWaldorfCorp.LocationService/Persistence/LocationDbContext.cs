@@ -1,13 +1,6 @@
-using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using StatlerWaldorfCorp.LocationService.Models;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
-using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Configuration;
-using Steeltoe.Extensions.Configuration;
-
 
 namespace StatlerWaldorfCorp.LocationService.Persistence
 {
