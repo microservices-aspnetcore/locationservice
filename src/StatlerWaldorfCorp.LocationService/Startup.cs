@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using StatlerWaldorfCorp.LocationService.Models;
 using StatlerWaldorfCorp.LocationService.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
@@ -40,7 +41,14 @@ namespace StatlerWaldorfCorp.LocationService {
         {
             services.AddEntityFrameworkNpgsql().AddDbContext<LocationDbContext>(options =>
                 options.UseNpgsql(Configuration));
-            services.AddScoped<ILocationRecordRepository, LocationRecordRepository>();
+            
+            if (Configuration.GetValue<Boolean>("transient")) {
+                logger.LogInformation("Using transient location record repository.");
+                services.AddScoped<ILocationRecordRepository, InMemoryLocationRecordRepository>();
+            } else {
+                services.AddScoped<ILocationRecordRepository, LocationRecordRepository>();
+            }
+            
             services.AddMvc();
         }
 
