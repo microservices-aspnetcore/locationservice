@@ -5,6 +5,7 @@ using StatlerWaldorfCorp.LocationService.Persistence;
 
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using Steeltoe.Extensions.Configuration;
 using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 using Microsoft.Extensions.Configuration;
@@ -94,9 +95,33 @@ namespace StatlerWaldorfCorp.LocationService.Integration
             LocationRecord target1 = repository.Get(firstRecord.MemberID, firstRecord.ID);
             LocationRecord target2 = repository.Get(firstRecord.MemberID, secondRecord.ID);
             
-            Assert.Equal(initialCount -1, afterCount);            
-            Assert.Null(target2);
+            Assert.Equal(initialCount -1, afterCount);
+            Assert.Equal(target1.ID, firstRecord.ID);            
             Assert.NotNull(target1);
+            Assert.Null(target2);
         }
+
+        [Fact]
+        public void ShouldGetAllForMember()
+        {
+            LocationRecordRepository repository = new LocationRecordRepository(context);
+            Guid memberId = Guid.NewGuid(); 
+
+            int initialCount = repository.AllForMember(memberId).Count();
+
+            LocationRecord firstRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
+                MemberID = memberId, Latitude = 12.3f }; 
+            repository.Add(firstRecord);
+            LocationRecord secondRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
+                MemberID = memberId, Latitude = 24.4f };
+            repository.Add(secondRecord);
+
+            ICollection<LocationRecord> records = repository.AllForMember(memberId);
+            int afterCount = records.Count();        
+
+            Assert.Equal(initialCount + 2, afterCount);
+            Assert.NotNull(records.FirstOrDefault(r => r.ID == firstRecord.ID));
+            Assert.NotNull(records.FirstOrDefault(r => r.ID == secondRecord.ID));            
+        }        
     }
 }

@@ -14,6 +14,7 @@ namespace StatlerWaldorfCorp.LocationService.Persistence {
                 locationRecords = new Dictionary<Guid, SortedList<long, LocationRecord>>();
             }
         }
+        
         public LocationRecord Add(LocationRecord locationRecord)
         {
             var memberRecords = getMemberRecords(locationRecord.MemberID);
@@ -25,20 +26,19 @@ namespace StatlerWaldorfCorp.LocationService.Persistence {
         public ICollection<LocationRecord> AllForMember(Guid memberId)
         {
             var memberRecords = getMemberRecords(memberId);
-
             return memberRecords.Values.Where( l => l.MemberID == memberId).ToList();
         }
 
         public LocationRecord Delete(Guid memberId, Guid recordId)
         {
             var memberRecords = getMemberRecords(memberId);
-
             LocationRecord lr = memberRecords.Values.Where( l => l.ID == recordId).FirstOrDefault();
+            
             if (lr != null) {
                 memberRecords.Remove(lr.Timestamp);
             }
-            return lr;
 
+            return lr;
         }
 
         public LocationRecord Get(Guid memberId, Guid recordId)
