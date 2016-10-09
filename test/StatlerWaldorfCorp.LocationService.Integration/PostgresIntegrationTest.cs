@@ -84,7 +84,7 @@ namespace StatlerWaldorfCorp.LocationService.Integration
             LocationRecord firstRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
                 MemberID = memberId, Latitude = 12.3f }; 
             repository.Add(firstRecord);
-            LocationRecord secondRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
+            LocationRecord secondRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 2,
                 MemberID = memberId, Latitude = 24.4f };
             repository.Add(secondRecord);
             
@@ -112,7 +112,7 @@ namespace StatlerWaldorfCorp.LocationService.Integration
             LocationRecord firstRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
                 MemberID = memberId, Latitude = 12.3f }; 
             repository.Add(firstRecord);
-            LocationRecord secondRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
+            LocationRecord secondRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 2,
                 MemberID = memberId, Latitude = 24.4f };
             repository.Add(secondRecord);
 
@@ -122,6 +122,26 @@ namespace StatlerWaldorfCorp.LocationService.Integration
             Assert.Equal(initialCount + 2, afterCount);
             Assert.NotNull(records.FirstOrDefault(r => r.ID == firstRecord.ID));
             Assert.NotNull(records.FirstOrDefault(r => r.ID == secondRecord.ID));            
-        }        
+        }
+
+        [Fact]
+        public void ShouldGetLatestForMember()
+        {
+            LocationRecordRepository repository = new LocationRecordRepository(context);
+            Guid memberId = Guid.NewGuid();
+
+            LocationRecord firstRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
+                MemberID = memberId, Latitude = 12.3f }; 
+            repository.Add(firstRecord);
+            LocationRecord secondRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 2,
+                MemberID = memberId, Latitude = 24.4f };
+            repository.Add(secondRecord);
+
+            LocationRecord latest = repository.GetLatestForMember(memberId);
+
+            Assert.NotNull(latest);
+            Assert.Equal(latest.ID, secondRecord.ID);
+            Assert.NotEqual(latest.ID, firstRecord.ID);
+        }
     }
 }
