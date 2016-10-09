@@ -73,5 +73,30 @@ namespace StatlerWaldorfCorp.LocationService.Integration
             Assert.Equal(firstRecord.ID, target2.ID);
             Assert.Equal(firstRecord.MemberID, target2.MemberID);
         }
+
+        [Fact]
+        public void ShouldDeleteRecord()
+        {
+            LocationRecordRepository repository = new LocationRecordRepository(context);
+            Guid memberId = Guid.NewGuid(); 
+
+            LocationRecord firstRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
+                MemberID = memberId, Latitude = 12.3f }; 
+            repository.Add(firstRecord);
+            LocationRecord secondRecord = new LocationRecord(){ ID = Guid.NewGuid(), Timestamp = 1,
+                MemberID = memberId, Latitude = 24.4f };
+            repository.Add(secondRecord);
+            
+            int initialCount = repository.AllForMember(memberId).Count();
+            repository.Delete(memberId, secondRecord.ID);
+            int afterCount = repository.AllForMember(memberId).Count();
+        
+            LocationRecord target1 = repository.Get(firstRecord.MemberID, firstRecord.ID);
+            LocationRecord target2 = repository.Get(firstRecord.MemberID, secondRecord.ID);
+            
+            Assert.Equal(initialCount -1, afterCount);            
+            Assert.Null(target2);
+            Assert.NotNull(target1);
+        }
     }
 }
