@@ -6,7 +6,7 @@
   "dependencies": {
     "Microsoft.NETCore.App": {
       "type": "platform",
-      "version": "1.0.0"
+      "version": "1.1.0-*"
     },
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
@@ -30,20 +30,12 @@
     "Steeltoe.Extensions.Configuration.CloudFoundry": "1.0.0-dev-*",
     "Steeltoe.CloudFoundry.Connector.PostgreSql": "1.0.0-dev-*"
   },
-    "tools": {
+  "tools": {
     "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.0.0-preview3-final"
-    },  
-    "frameworks": {
-	"netcoreapp1.0": {
-	    "dependencies": {
-		"Microsoft.NETCore.App": {
-		    "type": "platform",
-            "version": "1.1.0-*"
-		}
-	    },
-	    "imports": [
-		"dnxcore50"
-	    ]
-	}
+  },  
+  "frameworks": {
+    "netcoreapp1.0": {
+      "imports": "dnxcore50"
     }
+  }
 }
