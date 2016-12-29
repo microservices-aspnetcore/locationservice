@@ -1,4 +1,4 @@
-box: dotnetcoreservices/sdk
+box: microsoft/dotnet:1.1.0-sdk-msbuild
 services:
    - id: postgres
      env:
