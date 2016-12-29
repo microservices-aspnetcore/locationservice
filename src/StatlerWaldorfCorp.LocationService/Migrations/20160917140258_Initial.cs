@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace StatlerWaldorfCorp.LocationService.Migrations
@@ -7,7 +8,7 @@ namespace StatlerWaldorfCorp.LocationService.Migrations
     public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
-        {
+        {            
             migrationBuilder.CreatePostgresExtension("uuid-ossp");
 
             migrationBuilder.CreateTable(
