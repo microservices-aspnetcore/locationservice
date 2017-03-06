@@ -1,4 +1,4 @@
-box: microsoft/dotnet:1.1.0-sdk-msbuild
+box: microsoft/dotnet:1.1-sdk-msbuild
 services:
    - id: postgres
      env:
@@ -37,30 +37,6 @@ build:
         code: |
           dotnet test
 
-# interation tests
-    - script:
-        name: integration-migrate
-        cwd: src/StatlerWaldorfCorp.LocationService
-        code: |
-           export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
-           vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                              
-    - script:
-        name: integration-restore
-        cwd: test/StatlerWaldorfCorp.LocationService.Integration
-        code: |
-           dotnet restore
-    - script:
-        name: integration-build
-        cwd: test/StatlerWaldorfCorp.LocationService.Integration
-        code: |
-          dotnet build
-    - script:
-        name: integration-test
-        cwd: test/StatlerWaldorfCorp.LocationService.Integration
-        code: |
-          export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
-          vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet test
-
 # packaging
     - script:
         name: publish
@@ -92,23 +68,7 @@ deploy:
         repository: dotnetcoreservices/locationservice
         registry: https://registry.hub.docker.com
         entrypoint: "/pipeline/source/app/docker_entrypoint.sh"
-migrate:
-  steps:
-    - script:
-        name: restore
-        cwd: app
-        code: |
-          dotnet restore
-    - script:
-        name: build
-        cwd: app
-        code: |
-          dotnet build
-    - script:
-        name: migrate
-        cwd: app
-        code: |
-           vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$POSTGRES_URL dotnet ef database update
+
 cloud-deploy:
   steps:
     - chrisumbel/cf-deploy:
