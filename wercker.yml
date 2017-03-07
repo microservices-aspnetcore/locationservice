@@ -59,6 +59,7 @@ deploy:
         cwd: $WERCKER_OUTPUT_DIR/app
         username: $USERNAME
         password: $PASSWORD
+        tag: nodb
         repository: dotnetcoreservices/locationservice
         registry: https://registry.hub.docker.com
         entrypoint: "/pipeline/source/app/docker_entrypoint.sh"
