@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace StatlerWaldorfCorp.LocationService.Migrations
 {
@@ -9,14 +10,15 @@ namespace StatlerWaldorfCorp.LocationService.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {            
-            migrationBuilder.CreatePostgresExtension("uuid-ossp");
+            migrationBuilder.EnsurePostgresExtension("uuid-ossp");
 
             migrationBuilder.CreateTable(
                 name: "LocationRecords",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(nullable: false)
-                        .Annotation("Npgsql:ValueGeneratedOnAdd", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                        //.Annotation("Npgsql:ValueGeneratedOnAdd", true),
                     Altitude = table.Column<float>(nullable: false),
                     Latitude = table.Column<float>(nullable: false),
                     Longitude = table.Column<float>(nullable: false),
@@ -30,9 +32,7 @@ namespace StatlerWaldorfCorp.LocationService.Migrations
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropPostgresExtension("uuid-ossp");
-
+        {            
             migrationBuilder.DropTable(
                 name: "LocationRecords");
         }

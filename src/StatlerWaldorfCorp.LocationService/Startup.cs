@@ -7,8 +7,6 @@ using StatlerWaldorfCorp.LocationService.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
-using Steeltoe.Extensions.Configuration;
-using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 
@@ -22,9 +20,10 @@ namespace StatlerWaldorfCorp.LocationService {
         public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var builder = new ConfigurationBuilder()
+                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional:true)
                 .AddEnvironmentVariables()
-                .AddCommandLine(Startup.Args)
-                .AddCloudFoundry();
+                .AddCommandLine(Startup.Args);                
 
             Configuration = builder.Build();
 
@@ -35,17 +34,23 @@ namespace StatlerWaldorfCorp.LocationService {
             this.logger = this.loggerFactory.CreateLogger("Startup");
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public static IConfigurationRoot Configuration { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddEntityFrameworkNpgsql().AddDbContext<LocationDbContext>(options =>
-                options.UseNpgsql(Configuration));
-            
-            if (Configuration.GetValue<Boolean>("transient")) {
+        {                                    
+            //var transient = Boolean.Parse(Configuration.GetSection("transient").Value);
+            var transient = true;
+            if (Configuration.GetSection("transient") != null) {
+                transient = Boolean.Parse(Configuration.GetSection("transient").Value);
+            }
+            if (transient) {
                 logger.LogInformation("Using transient location record repository.");
                 services.AddScoped<ILocationRecordRepository, InMemoryLocationRecordRepository>();
-            } else {
+            } else {                
+                var connectionString = Configuration.GetSection("postgres:cstr").Value;                        
+                services.AddEntityFrameworkNpgsql().AddDbContext<LocationDbContext>(options =>
+                    options.UseNpgsql(connectionString));
+                logger.LogInformation("Using '{0}' for DB connection string.", connectionString);
                 services.AddScoped<ILocationRecordRepository, LocationRecordRepository>();
             }
             

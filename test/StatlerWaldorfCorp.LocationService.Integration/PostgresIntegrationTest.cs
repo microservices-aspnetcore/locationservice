@@ -2,12 +2,9 @@ using Xunit;
 
 using StatlerWaldorfCorp.LocationService.Models;
 using StatlerWaldorfCorp.LocationService.Persistence;
-
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Steeltoe.Extensions.Configuration;
-using Steeltoe.CloudFoundry.Connector.PostgreSql.EFCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,12 +20,13 @@ namespace StatlerWaldorfCorp.LocationService.Integration
         public PostgresIntegrationTest()
         {
 			config = new ConfigurationBuilder()
-                .AddEnvironmentVariables()
-                .AddCloudFoundry()
+                .SetBasePath(System.IO.Directory.GetCurrentDirectory())                
+                .AddEnvironmentVariables()                
                 .Build();
 
+            var connectionString = config.GetSection("postgres:cstr").Value;
             var optionsBuilder = new DbContextOptionsBuilder<LocationDbContext>();
-            optionsBuilder.UseNpgsql(config);
+            optionsBuilder.UseNpgsql(connectionString);
             this.context = new LocationDbContext(optionsBuilder.Options);                
         }
 

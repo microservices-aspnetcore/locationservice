@@ -1,4 +1,4 @@
-box: microsoft/dotnet:1.1.0-sdk-msbuild
+box: microsoft/dotnet:1.1.1-sdk
 services:
    - id: postgres
      env:
@@ -37,13 +37,16 @@ build:
         code: |
           dotnet test
 
-# interation tests
+# integration tests
     - script:
         name: integration-migrate
         cwd: src/StatlerWaldorfCorp.LocationService
-        code: |
-           export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
-           vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet ef database update                              
+        code: |           
+           export TRANSIENT=false
+           export POSTGRES__CSTR="Host=$POSTGRES_PORT_5432_TCP_ADDR"
+           export POSTGRES__CSTR="$POSTGRES__CSTR;Username=integrator;Password=inteword;"
+           export POSTGRES__CSTR="$POSTGRES__CSTR;Port=$POSTGRES_PORT_5432_TCP_PORT;Database=locationservice"
+           dotnet ef database update
     - script:
         name: integration-restore
         cwd: test/StatlerWaldorfCorp.LocationService.Integration
@@ -57,9 +60,8 @@ build:
     - script:
         name: integration-test
         cwd: test/StatlerWaldorfCorp.LocationService.Integration
-        code: |
-          export INTEGRATION_POSTGRES_URL=postgres://integrator:inteword@$POSTGRES_PORT_5432_TCP_ADDR:$POSTGRES_PORT_5432_TCP_PORT/locationservice
-          vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$INTEGRATION_POSTGRES_URL dotnet test
+        code: |          
+          dotnet test
 
 # packaging
     - script:
@@ -75,8 +77,7 @@ build:
     - script:
         name: copy entrypoint
         code: |
-          cp docker_entrypoint.sh $WERCKER_OUTPUT_DIR/app
-          ls $WERCKER_OUTPUT_DIR/app
+          cp docker_entrypoint.sh $WERCKER_OUTPUT_DIR/app          
     - script:
         name: copy config
         cwd: src/StatlerWaldorfCorp.LocationService
@@ -92,31 +93,4 @@ deploy:
         repository: dotnetcoreservices/locationservice
         registry: https://registry.hub.docker.com
         entrypoint: "/pipeline/source/app/docker_entrypoint.sh"
-migrate:
-  steps:
-    - script:
-        name: restore
-        cwd: app
-        code: |
-          dotnet restore
-    - script:
-        name: build
-        cwd: app
-        code: |
-          dotnet build
-    - script:
-        name: migrate
-        cwd: app
-        code: |
-           vcap__services__postgres__0__name=postgres vcap__services__postgres__0__credentials__uri=$POSTGRES_URL dotnet ef database update
-cloud-deploy:
-  steps:
-    - chrisumbel/cf-deploy:
-        api: $API
-        user: $USER
-        password: $PASSWORD
-        org: $ORG
-        space: $SPACE
-        appname: locationservice
-        docker_image: dotnetcoreservices/locationservice
-        skip_ssl_validation: true
+        
